@@ -5,7 +5,7 @@
 #A AB ABB B ABA ABAB BB ABBA BB
 #∅A 1B 2B ∅B 2A 5B 4B 3A 7
 #s = "AB AB AB   " #A B " " AB " "
-s = "ABZABZABZZZ" #A B " " AB " "
+#s = "ABZABZABZZZ" #A B " " AB " "
 class lz():
     null=""
     _dic = {}
@@ -52,20 +52,20 @@ class lz():
                 last_t = d
                 if p2==(len(self._s)-1) :
                     self.update_tok(str)
-                    self.update_enc(str,d)
+                    self.update_enc('',d)
                 p2+=1
 
     def dec(self) :
         for i in range(len(self._e)):
             num=self._e[i][1]
             sym=self._e[i][0]
-            last_tok = (i==(len(self._e)-1))
+            #last_tok = (i==(len(self._e)-1))
             if num in self._d_dic:
-                if last_tok :
-                    s = sym
-                else :
-                    s = self._d_dic[num]+sym
-                    self._d_dic[i]=s
+                #if last_tok :
+                #    s = sym
+                #else :
+                s = self._d_dic[num]+sym
+                self._d_dic[i]=s
                 self._d.append(s)
             else :
                 self._d.append(sym)
@@ -76,6 +76,7 @@ class lz():
         self._s = s
         self.tokens()
         self.dec()
+        assert(self._d==self._t),"decoded != original"
 
     def __repr__(self) :
         return "original string :"+ str(self._s) + "\ntokens : "+str(self._t)\
