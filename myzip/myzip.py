@@ -6,14 +6,22 @@
 #∅A 1B 2B ∅B 2A 5B 4B 3A 7
 #s = "AB AB AB   " #A B " " AB " "
 #s = "ABZABZABZZZ" #A B " " AB " "
+s = "A"*1024
+
 class lz():
     null=""
+    NUM_BYTES_PER_ENC_ENTRY = 5
     _dic = {}
     _d_dic = {}
     _s = ""
     _t = []
     _e=  []
     _d = []
+
+    def get_compression_ratio(self):
+        orig_string_len = len(self._s) 
+        enc_string_len = len(self._e) * self.NUM_BYTES_PER_ENC_ENTRY
+        self._compression_ratio = (enc_string_len/orig_string_len)*100
 
     def get_dic(self,s):
         if s in self._dic :
@@ -59,11 +67,7 @@ class lz():
         for i in range(len(self._e)):
             num=self._e[i][1]
             sym=self._e[i][0]
-            #last_tok = (i==(len(self._e)-1))
             if num in self._d_dic:
-                #if last_tok :
-                #    s = sym
-                #else :
                 s = self._d_dic[num]+sym
                 self._d_dic[i]=s
                 self._d.append(s)
@@ -77,11 +81,13 @@ class lz():
         self.tokens()
         self.dec()
         assert(self._d==self._t),"decoded != original"
+        self.get_compression_ratio()
 
     def __repr__(self) :
         return "original string :"+ str(self._s) + "\ntokens : "+str(self._t)\
             +"\ndictionary : "+str(self._dic)+"\nencoded : "+str(self._e)\
-            +"\ndecoded : "+str(self._d)+"\ndec dictionary : "+str(self._d_dic)
+            +"\ndecoded : "+str(self._d)+"\ndec dictionary : "+str(self._d_dic)\
+            +"\ncompression ratio: "+str(self._compression_ratio)+"%"
 
 
 
