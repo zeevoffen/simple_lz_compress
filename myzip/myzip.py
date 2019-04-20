@@ -6,7 +6,7 @@
 #∅A 1B 2B ∅B 2A 5B 4B 3A 7
 #s = "AB AB AB   " #A B " " AB " "
 #s = "ABZABZABZZZ" #A B " " AB " "
-s = "A"*1024
+s = "ABAB"*1024
 
 class lz():
     null=""
