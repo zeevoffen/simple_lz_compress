@@ -14,9 +14,25 @@ class lz():
     NUM_BYTES_PER_ENC_ENTRY = 5
 
     def get_compression_ratio(self):
-        orig_string_len = len(self._s) 
-        enc_string_len = len(self._e) * self.NUM_BYTES_PER_ENC_ENTRY
-        self._compression_ratio = (enc_string_len/orig_string_len)*100
+        #orig_string_len = len(self._s) 
+        #enc_string_len = len(self._e) * self.NUM_BYTES_PER_ENC_ENTRY
+        self._compression_ratio = (self.calc_num_bits_needed()/self.calc_num_bits_orig())*100
+
+    def calc_num_bits_orig(self):
+        return (len(self._s)*8)
+
+    def calc_num_bits_needed(self):
+        tb=0
+        nb=1
+        for i in range(0,len(self._e)+1):
+            if i>(2**nb) :
+                nb+=1
+            tb+=(nb+8)
+        return tb
+
+    def get_dic_size(self):
+        return (len(self._d_dic))
+
 
     def get_dic(self,s):
         if s in self._dic :
