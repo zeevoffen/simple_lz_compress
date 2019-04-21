@@ -6,7 +6,8 @@
 #∅A 1B 2B ∅B 2A 5B 4B 3A 7
 #s = "AB AB AB   " #A B " " AB " "
 #s = "ABZABZABZZZ" #A B " " AB " "
-s = "ABAB"*1024
+#s = "ABAB"*1024
+#s= "ABABABAB" * 100
 
 class lz():
     null=""
@@ -80,7 +81,7 @@ class lz():
         self._s = s
         self.tokens()
         self.dec()
-        assert(self._d==self._t),"decoded != original"
+        assert(self._d==self._t),"decoded {} != original {}".format(self._d,self._t)
         self.get_compression_ratio()
 
     def __repr__(self) :
@@ -91,9 +92,9 @@ class lz():
 
 
 
-lz1 = lz(s)
+#lz1 = lz(s)
 
-print(lz1)
+#print(lz1)
 
 
 
