@@ -12,12 +12,6 @@
 class lz():
     null=""
     NUM_BYTES_PER_ENC_ENTRY = 5
-    _dic = {}
-    _d_dic = {}
-    _s = ""
-    _t = []
-    _e=  []
-    _d = []
 
     def get_compression_ratio(self):
         orig_string_len = len(self._s) 
@@ -78,6 +72,12 @@ class lz():
           
 
     def __init__(self,s):
+        self._dic = {}
+        self._d_dic = {}
+        self._s = ""
+        self._t = []
+        self._e=  []
+        self._d = []
         self._s = s
         self.tokens()
         self.dec()
@@ -92,7 +92,7 @@ class lz():
 
 
 
-#lz1 = lz(s)
+#lz1 = lz("A")
 
 #print(lz1)
 
