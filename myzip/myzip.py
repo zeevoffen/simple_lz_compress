@@ -9,6 +9,9 @@
 #s = "ABAB"*1024
 #s= "ABABABAB" * 100
 
+import struct
+
+
 class lz():
     null=""
     NUM_BYTES_PER_ENC_ENTRY = 5
@@ -85,7 +88,73 @@ class lz():
             else :
                 self._d.append(sym)
                 self._d_dic[num]=sym
-          
+
+    def read_enc_bin(self,file_name):
+        #binary_file = open(file_name, "rb")
+        #content = binary_file.read()
+        f = open(file_name, "rb")
+        nb=1
+        bc=0
+        while True : 
+            if bc > 2**nb :
+                nb+=1
+            if nb<=8 :
+                n_byte_to_read = 2
+                frmt = "Bc"
+            elif nb<=16 :
+                n_byte_to_read = 3
+                frmt = "Hc"
+            elif nb<=32 :
+                n_byte_to_read = 5
+                frmt = "Ic"
+            bin_data = f.read(n_byte_to_read)
+            if bin_data == b"":
+                break
+            else : 
+                size = len(bin_data)
+                if size < n_byte_to_read:
+                    if size==1 :
+                        frmt="B"
+                    elif size==2 :
+                        frmt="H"
+                    else :
+                        frmt="I"
+                data_tpl = struct.unpack(frmt,bin_data)
+            indx= data_tpl[0]
+            e_indx= self._e[bc][1]
+            if len(data_tpl)==2:
+                char= data_tpl[1].decode()
+            else :
+                char = ''
+            e_char= self._e[bc][0]
+            assert(indx==e_indx)
+            assert(char==e_char)
+            bc+=1
+            #print('tpl:',data_tpl)
+           
+    def write_enc_bin(self,file_name):
+        binary_file = open(file_name, "wb")
+        tb=0
+        nb=1
+        for i in range(0,len(self._e)):
+            num=self._e[i][1]
+            sym=self._e[i][0]
+            sym_bin=bytes(sym,encoding= 'utf-8')
+            if i>(2**nb) :
+                nb+=1
+            if nb<=8 :
+                format = "B"
+            elif nb<=16 :
+                format = "H"
+            else :
+                format = "I"
+            if sym=='' :
+                binary_data = struct.pack(format, num)
+            else :
+                format+='c'
+                binary_data = struct.pack(format, num, sym_bin)
+            binary_file.write(binary_data)
+        binary_file.close()
 
     def __init__(self,s):
         self._dic = {}
