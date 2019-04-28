@@ -1,16 +1,6 @@
 
-#s = "ABABBBAA" # A B AB BB AA
-#s = "ABABABB" # A B AB ABB
-#s = "AABABBBABAABABBBABBABB"
-#A AB ABB B ABA ABAB BB ABBA BB
-#∅A 1B 2B ∅B 2A 5B 4B 3A 7
-#s = "AB AB AB   " #A B " " AB " "
-#s = "ABZABZABZZZ" #A B " " AB " "
-#s = "ABAB"*1024
-#s= "ABABABAB" * 100
-
 import struct
-
+import pickle
 
 class lz():
     null=""
@@ -31,7 +21,7 @@ class lz():
             if i>(2**nb) :
                 nb+=1
             tb+=(nb+8)
-        return tb
+        return tb + len(self._e)*8
 
     def get_dic_size(self):
         return (len(self._d_dic))
@@ -90,8 +80,6 @@ class lz():
                 self._d_dic[num]=sym
 
     def read_enc_bin(self,file_name):
-        #binary_file = open(file_name, "rb")
-        #content = binary_file.read()
         f = open(file_name, "rb")
         nb=1
         bc=0
@@ -131,7 +119,17 @@ class lz():
             assert(char==e_char)
             bc+=1
             #print('tpl:',data_tpl)
-           
+
+    def write_p_enc_bin(self,file_name):
+        pickle_out = open(file_name,"wb")
+        pickle.dump(self._e, pickle_out)
+        pickle_out.close()
+
+    def read_p_enc_bin(self,file_name):
+        pickle_in = open(file_name,"rb")
+        p_enc = pickle.load(pickle_in)
+        assert(p_enc==self._e)
+                           
     def write_enc_bin(self,file_name):
         binary_file = open(file_name, "wb")
         tb=0
@@ -176,10 +174,6 @@ class lz():
             +"\ncompression ratio: "+str(self._compression_ratio)+"%"
 
 
-
-#lz1 = lz("A")
-
-#print(lz1)
 
 
 

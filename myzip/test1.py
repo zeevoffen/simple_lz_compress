@@ -26,15 +26,22 @@ class Test_myzip(unittest.TestCase):
 
     def test_F(self):
         lz = self.template(open('TextFile1.txt','r').read())
-        lz.write_enc_bin("kuki.zz")
-        print("encoded :",lz._e)
-        lz.read_enc_bin("kuki.zz")
+        lz.write_enc_bin("TextFile1.zz")
+        lz.read_enc_bin("TextFile1.zz")
+        lz.write_p_enc_bin("TextFile1.zzp")
+        lz.read_p_enc_bin("TextFile1.zzp")
+        print(lz)
 
     def test_G(self):
-        self.template(open('TextFile2.txt','r').read())
+        lz=self.template(open('TextFile2.txt','r').read())
+        lz.write_enc_bin("TextFile2.zz")
+        lz.read_enc_bin("TextFile2.zz")
+
 
     def test_H(self):
-        self.template(open('TextFile3.txt','r').read())
+        lz=self.template(open('TextFile3.txt','r').read())
+        lz.write_enc_bin("TextFile3.zz")
+        lz.read_enc_bin("TextFile3.zz")
 
     def test_I(self):
         lz = self.template(open('TextFile4.txt','r').read())
