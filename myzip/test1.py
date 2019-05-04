@@ -15,11 +15,15 @@ class Test_myzip(unittest.TestCase):
 
     def test_A(self):
         lz = self.template("ABCDE")
-        lz.write_enc_bin("kuki.zz")
-        lz.read_enc_bin("kuki.zz")
+        #lz.write_enc_bin("kuki.zz")
+        lz.write_n_enc_bin("kuki.zz")
+        #lz.read_enc_bin("kuki.zz")
 
     def test_B(self):
-        self.template(''.join([random.choice(string.ascii_uppercase+string.digits) for s in range(10)]))
+        for n in range(100) :
+            lz = self.template(''.join([random.choice(string.ascii_uppercase+string.digits) for s in range(10)]))
+            lz.write_n_enc_bin("kuki.zz")
+
 
     def test_C(self):
         self.template(''.join([random.choice(string.ascii_uppercase+string.digits) for s in range(1000000)]))
@@ -47,6 +51,20 @@ class Test_myzip(unittest.TestCase):
         lz = self.template(open('TextFile4.txt','r').read())
         lz.write_enc_bin("kuki.zz")
         lz.read_enc_bin("kuki.zz")
+
+    def test_J(self):
+        lz = self.template(open('TextFile1.txt','r').read())
+        #lz.write_enc_bin("TextFile1.zz")
+        #lz.read_enc_bin("TextFile1.zz")
+        lz.write_s_enc_bin("TextFile1.zzn")
+        #print(lz)
+
+    def test_K(self):
+        lz = self.template(open('TextFile3.txt','r').read())
+        #lz.write_enc_bin("TextFile1.zz")
+        #lz.read_enc_bin("TextFile1.zz")
+        lz.write_s_enc_bin("TextFile3.zzn")
+        #print(lz)
 
 if __name__ == '__main__':
     unittest.main()

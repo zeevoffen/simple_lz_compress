@@ -1,6 +1,7 @@
 
 import struct
 import pickle
+import math
 
 class lz():
     null=""
@@ -152,6 +153,61 @@ class lz():
                 format+='c'
                 binary_data = struct.pack(format, num, sym_bin)
             binary_file.write(binary_data)
+        binary_file.close()
+
+    def write_n_enc_bin(self,file_name):
+        binary_file = open(file_name, "wb")
+        print(self._e)
+        for i in range(0,len(self._e)):
+            tkn=self._e[i]
+            #num=self._e[i][1]
+            num=tkn[1]
+            sym=self._e[i][0]
+            sym_frmt=''
+            sym_bin=bytes(sym,encoding= 'utf-8')
+            sym_l = len(sym_bin)
+            for i in range(sym_l) :
+                sym_frmt+='c'
+            if num<=0xff :
+                n_frmt="B"
+                num_l=1
+            elif num<=0xffff:
+                n_frmt="H"
+                num_l=2
+            else :
+                n_frmt+="I"
+                num_l=4
+            len_byte=(num_l<<4)+sym_l
+            final_frmt="B"+n_frmt+sym_frmt
+            if sym_l != 0 :
+                binary_data = struct.pack(final_frmt,len_byte,num,sym_bin)
+            else : 
+                binary_data = struct.pack(final_frmt,num,len_byte)
+            binary_file.write(binary_data)
+            assert(len(binary_data)==(num_l+sym_l+1))
+        binary_file.close()
+
+    def write_s_enc_bin(self,file_name):
+        binary_file = open(file_name, "wb")
+        print(self._e)
+        pos=0
+        for i in range(0,len(self._e)):
+            num=self._e[i][1]
+            sym=self._e[i][0]
+            sym_bin=bytes(sym,encoding= 'utf-8')
+            sym_l = len(sym_bin)
+            num_l = math.ceil(num.bit_length()/8)
+            num_bin=num.to_bytes(num_l,'big')
+            len_byte=(num_l<<4)+sym_l
+            len_byte_bin = len_byte.to_bytes(1,'big')
+            #binary_data = bytearray([len_byte,num])
+            #binary_data += sym_bin
+            print(num_l,sym_l)
+            binary_data=len_byte_bin+num_bin+sym_bin
+            binary_file.write(binary_data)
+            pos+=len(binary_data)
+            binary_file.seek(pos)
+            assert(len(binary_data)==(num_l+sym_l+1))
         binary_file.close()
 
     def __init__(self,s):
